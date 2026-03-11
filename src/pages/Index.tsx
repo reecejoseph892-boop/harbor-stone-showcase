@@ -1,14 +1,228 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Search, ArrowRight, Star, Mail, CheckCircle2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { listings, formatPrice, testimonials, stats } from "@/data/listings";
+import PropertyCard from "@/components/PropertyCard";
+import QuickViewModal from "@/components/QuickViewModal";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import { type Property } from "@/data/listings";
+import { motion } from "framer-motion";
 
-const Index = () => {
+export default function Index() {
+  const [quickViewProperty, setQuickViewProperty] = useState<Property | null>(null);
+  const [emailCaptured, setEmailCaptured] = useState(false);
+  const [checklist, setChecklist] = useState("");
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="flex min-h-screen flex-col">
+      <Header />
+
+      {/* ===== HERO ===== */}
+      <section className="relative flex min-h-[85vh] items-center overflow-hidden bg-foreground">
+        <img
+          src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600&q=80"
+          alt="Beautiful Austin neighborhood home"
+          className="absolute inset-0 h-full w-full object-cover opacity-40"
+          loading="eager"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-foreground/70 to-foreground/30" />
+        <div className="container relative z-10 py-20">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="max-w-2xl"
+          >
+            <h1 className="font-heading text-4xl font-bold leading-tight text-primary-foreground md:text-5xl lg:text-6xl">
+              Find your next home in Austin — quickly, clearly, confidently.
+            </h1>
+            <p className="mt-4 text-lg text-primary-foreground/80 md:text-xl">
+              Local expertise, easy scheduling, and transparent offers — start with a showing or get a free valuation.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Button size="lg" asChild data-event="hero_book_showing">
+                <Link to="/listings">Book a Showing</Link>
+              </Button>
+              <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground" asChild data-event="hero_valuation">
+                <Link to="/sell">Get a Free Valuation</Link>
+              </Button>
+            </div>
+          </motion.div>
+
+          {/* Quick Search */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mt-12 max-w-3xl rounded-lg bg-card/95 p-4 shadow-lg backdrop-blur-sm md:p-5"
+          >
+            <form className="flex flex-col gap-3 md:flex-row md:items-end">
+              <div className="flex-1">
+                <label className="mb-1 block text-xs font-medium text-muted-foreground">Location</label>
+                <Select defaultValue="austin">
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="austin">Austin, TX</SelectItem>
+                    <SelectItem value="zilker">Zilker</SelectItem>
+                    <SelectItem value="barton">Barton Hills</SelectItem>
+                    <SelectItem value="east">East Austin</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex-1">
+                <label className="mb-1 block text-xs font-medium text-muted-foreground">Price Range</label>
+                <Select defaultValue="any">
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="any">Any Price</SelectItem>
+                    <SelectItem value="under500">Under $500K</SelectItem>
+                    <SelectItem value="500-800">$500K – $800K</SelectItem>
+                    <SelectItem value="800-1m">$800K – $1M</SelectItem>
+                    <SelectItem value="over1m">$1M+</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex-1">
+                <label className="mb-1 block text-xs font-medium text-muted-foreground">Beds</label>
+                <Select defaultValue="any">
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="any">Any</SelectItem>
+                    <SelectItem value="1">1+</SelectItem>
+                    <SelectItem value="2">2+</SelectItem>
+                    <SelectItem value="3">3+</SelectItem>
+                    <SelectItem value="4">4+</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <Button asChild className="gap-1.5" data-event="hero_search">
+                <Link to="/listings"><Search className="h-4 w-4" /> Search</Link>
+              </Button>
+            </form>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ===== FEATURED LISTINGS ===== */}
+      <section className="container py-16 md:py-20">
+        <div className="mb-8 flex items-end justify-between">
+          <div>
+            <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">Featured Listings</h2>
+            <p className="mt-1 text-muted-foreground">Hand-picked homes in Austin's best neighborhoods</p>
+          </div>
+          <Link to="/listings" className="hidden items-center gap-1 text-sm font-medium text-primary hover:underline md:flex">
+            View all <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {listings.map((p) => (
+            <PropertyCard key={p.id} property={p} onQuickView={setQuickViewProperty} />
+          ))}
+        </div>
+        <Link to="/listings" className="mt-6 flex items-center justify-center gap-1 text-sm font-medium text-primary hover:underline md:hidden">
+          View all listings <ArrowRight className="h-4 w-4" />
+        </Link>
+      </section>
+
+      {/* ===== LEAD MAGNET ===== */}
+      <section className="bg-primary py-14">
+        <div className="container text-center">
+          <h2 className="font-heading text-2xl font-bold text-primary-foreground md:text-3xl">
+            Get Our 7-Step Buying Checklist
+          </h2>
+          <p className="mx-auto mt-2 max-w-lg text-primary-foreground/80">
+            Everything first-time and move-up buyers need to know before touring Austin homes.
+          </p>
+          {emailCaptured ? (
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="mt-6 flex items-center justify-center gap-2 text-primary-foreground">
+              <CheckCircle2 className="h-5 w-5" /> Check your inbox!
+            </motion.div>
+          ) : (
+            <form
+              onSubmit={(e) => { e.preventDefault(); if (checklist.includes("@")) setEmailCaptured(true); }}
+              className="mx-auto mt-6 flex max-w-md gap-2"
+            >
+              <Input
+                type="email"
+                placeholder="you@email.com"
+                value={checklist}
+                onChange={(e) => setChecklist(e.target.value)}
+                className="bg-primary-foreground text-foreground"
+                aria-label="Email for buying checklist"
+                required
+              />
+              <Button type="submit" variant="secondary" data-event="checklist_download">
+                <Mail className="mr-1.5 h-4 w-4" /> Send It
+              </Button>
+            </form>
+          )}
+        </div>
+      </section>
+
+      {/* ===== TRUST / STATS ===== */}
+      <section className="container py-16 md:py-20">
+        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+          {stats.map((s) => (
+            <div key={s.label} className="text-center">
+              <p className="font-heading text-3xl font-bold text-primary md:text-4xl">{s.value}</p>
+              <p className="mt-1 text-sm text-muted-foreground">{s.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ===== TESTIMONIALS ===== */}
+      <section className="bg-secondary py-16 md:py-20">
+        <div className="container">
+          <h2 className="text-center font-heading text-3xl font-bold text-foreground md:text-4xl">What Our Clients Say</h2>
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
+            {testimonials.map((t) => (
+              <div key={t.name} className="rounded-lg bg-card p-6 shadow-sm">
+                <div className="mb-3 flex gap-0.5">
+                  {Array.from({ length: t.rating }).map((_, i) => (
+                    <Star key={i} className="h-4 w-4 fill-accent text-accent" />
+                  ))}
+                </div>
+                <p className="text-card-foreground italic">"{t.quote}"</p>
+                <div className="mt-4 flex items-center gap-3">
+                  <img src={t.image} alt={t.name} className="h-10 w-10 rounded-full object-cover" loading="lazy" />
+                  <div>
+                    <p className="text-sm font-medium text-card-foreground">{t.name}</p>
+                    <p className="text-xs text-muted-foreground">{t.role}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== CTA STRIP ===== */}
+      <section className="container py-16 text-center md:py-20">
+        <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">Ready to get started?</h2>
+        <p className="mx-auto mt-2 max-w-md text-muted-foreground">
+          Whether you're buying or selling, our team is here to guide you.
+        </p>
+        <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+          <Button size="lg" asChild data-event="bottom_book_showing">
+            <Link to="/listings">Book a Showing</Link>
+          </Button>
+          <Button size="lg" variant="outline" asChild data-event="bottom_sell">
+            <Link to="/sell">Sell Your Home</Link>
+          </Button>
+        </div>
+      </section>
+
+      <Footer />
+
+      {/* Quick View Modal */}
+      {quickViewProperty && (
+        <QuickViewModal property={quickViewProperty} onClose={() => setQuickViewProperty(null)} />
+      )}
     </div>
   );
-};
-
-export default Index;
+}
