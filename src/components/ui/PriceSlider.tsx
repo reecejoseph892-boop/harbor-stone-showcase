@@ -19,7 +19,8 @@ export const PriceSlider = () => {
     };
 
     return (
-        <div className="w-full max-w-md mx-auto p-6 bg-card rounded-xl border border-border shadow-lg">
+        <div className="w-full max-w-md mx-auto p-4 sm:p-6 bg-card rounded-xl border border-border shadow-lg">
+
             <div className="text-center mb-6">
                 <p className="text-sm font-medium uppercase tracking-widest text-muted-foreground mb-1">Estimated Value</p>
                 <motion.h2

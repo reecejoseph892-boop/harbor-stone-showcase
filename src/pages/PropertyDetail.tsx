@@ -42,12 +42,13 @@ export default function PropertyDetail() {
       <Header />
 
       {/* Image Gallery */}
-      <section className="relative aspect-[21/9] w-full overflow-hidden bg-muted md:aspect-[3/1]">
+      <section className="relative aspect-[16/9] w-full overflow-hidden bg-muted md:aspect-[21/9] lg:aspect-[3/1]">
         <img
           src={property.images[currentImage]}
           alt={`${property.address} photo ${currentImage + 1}`}
           className="h-full w-full object-cover"
         />
+
         {property.images.length > 1 && (
           <>
             <button onClick={prevImage} className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-card/80 p-2 backdrop-blur-sm hover:bg-card" aria-label="Previous image">

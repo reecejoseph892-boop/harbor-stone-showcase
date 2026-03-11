@@ -23,42 +23,51 @@ export default function PropertyCard({ property, onQuickView }: PropertyCardProp
     >
       {/* Image */}
       <div className="relative aspect-[4/3] overflow-hidden">
-        <img
-          src={property.image}
-          alt={`${property.address} — ${property.neighborhood}`}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-          loading="lazy"
-        />
-        <motion.div
-          initial={{ x: "0%" }}
-          whileInView={{ x: "100%" }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.77, 0, 0.175, 1], delay: 0.1 }}
-          className="absolute inset-0 bg-primary z-10"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-foreground/40 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+        <Link to={`/property/${property.id}`} className="block h-full w-full">
+          <img
+            src={property.image}
+            alt={`${property.address} — ${property.neighborhood}`}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+            loading="lazy"
+          />
+          <motion.div
+            initial={{ x: "0%" }}
+            whileInView={{ x: "100%" }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.77, 0, 0.175, 1], delay: 0.1 }}
+            className="absolute inset-0 bg-primary z-10 pointer-events-none"
+          />
+        </Link>
+        <div className="absolute inset-0 bg-gradient-to-t from-foreground/40 to-transparent opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none" />
 
 
         {/* Quick actions overlay */}
-        <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between opacity-0 transition-opacity group-hover:opacity-100">
+        <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between opacity-0 transition-opacity group-hover:opacity-100 z-20">
           <Button
             size="sm"
-            onClick={(e) => { e.preventDefault(); onQuickView(property); }}
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); onQuickView(property); }}
             className="gap-1.5"
             data-event="quick_view"
           >
             <Eye className="h-3.5 w-3.5" /> Quick View
           </Button>
-          <Button size="icon" variant="secondary" className="h-8 w-8 rounded-full" aria-label="Save listing">
+          <Button
+            size="icon"
+            variant="secondary"
+            className="h-8 w-8 rounded-full"
+            aria-label="Save listing"
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+          >
             <Heart className="h-4 w-4" />
           </Button>
         </div>
 
         {/* Price badge */}
-        <div className="absolute left-3 top-3 rounded-md bg-card/90 px-2.5 py-1 text-sm font-semibold text-card-foreground backdrop-blur-sm">
+        <div className="absolute left-3 top-3 rounded-md bg-card/90 px-2.5 py-1 text-sm font-semibold text-card-foreground backdrop-blur-sm z-20">
           {formatPrice(property.price)}
         </div>
       </div>
+
 
       {/* Info */}
       <div className="p-4">
