@@ -3,7 +3,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import Index from "./pages/Index";
+
+
+
 import Listings from "./pages/Listings";
 import PropertyDetail from "./pages/PropertyDetail";
 import About from "./pages/About";
@@ -19,16 +23,21 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/listings" element={<Listings />} />
-          <Route path="/property/:id" element={<PropertyDetail />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/sell" element={<SellerLanding />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <SmoothScroll>
+          <Routes>
+
+
+            <Route path="/" element={<Index />} />
+            <Route path="/listings" element={<Listings />} />
+            <Route path="/property/:id" element={<PropertyDetail />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/sell" element={<SellerLanding />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </SmoothScroll>
       </BrowserRouter>
+
     </TooltipProvider>
   </QueryClientProvider>
 );

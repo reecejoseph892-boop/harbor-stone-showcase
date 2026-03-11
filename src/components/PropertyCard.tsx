@@ -10,12 +10,15 @@ interface PropertyCardProps {
 }
 
 export default function PropertyCard({ property, onQuickView }: PropertyCardProps) {
+  const customEasing: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
   return (
+
     <motion.article
       initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.35 }}
+      transition={{ duration: 0.8, ease: customEasing }}
       className="group overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 hover:border-primary/20"
     >
       {/* Image */}
@@ -26,7 +29,15 @@ export default function PropertyCard({ property, onQuickView }: PropertyCardProp
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
           loading="lazy"
         />
+        <motion.div
+          initial={{ x: "0%" }}
+          whileInView={{ x: "100%" }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.77, 0, 0.175, 1], delay: 0.1 }}
+          className="absolute inset-0 bg-primary z-10"
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-foreground/40 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+
 
         {/* Quick actions overlay */}
         <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between opacity-0 transition-opacity group-hover:opacity-100">

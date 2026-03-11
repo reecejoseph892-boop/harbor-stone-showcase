@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Search, ArrowRight, Star, Mail, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,24 +9,38 @@ import PropertyCard from "@/components/PropertyCard";
 import QuickViewModal from "@/components/QuickViewModal";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { Magnetic } from "@/components/ui/Magnetic";
 import { type Property } from "@/data/listings";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function Index() {
   const [quickViewProperty, setQuickViewProperty] = useState<Property | null>(null);
   const [emailCaptured, setEmailCaptured] = useState(false);
   const [checklist, setChecklist] = useState("");
 
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [0.4, 0.2]);
+
+  const customEasing: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
   return (
+
     <div className="flex min-h-screen flex-col">
       <Header />
 
       {/* ===== HERO ===== */}
-      <section className="relative flex min-h-[85vh] items-center overflow-hidden bg-foreground">
-        <img
+      <section ref={heroRef} className="relative flex min-h-[85vh] items-center overflow-hidden bg-foreground">
+        <motion.img
+          style={{ y, opacity }}
           src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600&q=80"
           alt="Beautiful Austin neighborhood home"
-          className="absolute inset-0 h-full w-full object-cover opacity-40"
+          className="absolute inset-0 h-full w-full object-cover"
           loading="eager"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-foreground/85 to-foreground/40" />
@@ -34,7 +48,7 @@ export default function Index() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8, ease: customEasing }}
             className="max-w-2xl"
           >
             <h1 className="font-heading text-4xl font-bold leading-tight text-primary-foreground md:text-5xl lg:text-6xl">
@@ -43,13 +57,18 @@ export default function Index() {
             <p className="mt-4 text-lg text-primary-foreground/80 md:text-xl">
               Local expertise, easy scheduling, and transparent offers — start with a showing or get a free valuation.
             </p>
+
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button size="lg" asChild data-event="hero_book_showing">
-                <Link to="/listings">Book a Showing</Link>
-              </Button>
-              <Button size="lg" variant="secondary" className="bg-gold text-gold-foreground hover:bg-gold/90 border-none px-8" asChild data-event="hero_valuation">
-                <Link to="/sell">Get a Free Valuation</Link>
-              </Button>
+              <Magnetic strength={0.2}>
+                <Button size="lg" asChild data-event="hero_book_showing">
+                  <Link to="/listings">Book a Showing</Link>
+                </Button>
+              </Magnetic>
+              <Magnetic strength={0.2}>
+                <Button size="lg" variant="gold" className="px-8" asChild data-event="hero_valuation">
+                  <Link to="/sell">Get a Free Valuation</Link>
+                </Button>
+              </Magnetic>
             </div>
           </motion.div>
 
@@ -57,7 +76,7 @@ export default function Index() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: customEasing }}
             className="mt-12 max-w-3xl rounded-lg bg-card/85 p-4 shadow-2xl backdrop-blur-md border border-white/10 md:p-5"
           >
             <form className="flex flex-col gap-3 md:flex-row md:items-end">
@@ -112,7 +131,7 @@ export default function Index() {
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.7 }}
+        transition={{ duration: 1, ease: customEasing }}
         className="container py-24 md:py-32"
       >
         <div className="mb-10 flex items-end justify-between">
@@ -139,7 +158,7 @@ export default function Index() {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 1.2, ease: customEasing }}
         className="bg-primary py-20 md:py-28"
       >
         <div className="container text-center">
@@ -232,7 +251,7 @@ export default function Index() {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.8, ease: customEasing }}
         className="container py-24 text-center md:py-32"
       >
         <h2 className="font-heading text-4xl font-bold text-foreground md:text-5xl">Ready to get started?</h2>

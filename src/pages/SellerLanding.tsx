@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { testimonials, agents } from "@/data/listings";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { PriceSlider } from "@/components/ui/PriceSlider";
 import { motion } from "framer-motion";
 
 const steps = [
@@ -15,6 +16,7 @@ const steps = [
 ];
 
 export default function SellerLanding() {
+  const customEasing: [number, number, number, number] = [0.22, 1, 0.36, 1];
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({ address: "", email: "", phone: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -39,68 +41,84 @@ export default function SellerLanding() {
       {/* Hero with Valuation Form */}
       <section className="relative overflow-hidden bg-primary py-20 md:py-28">
         <div className="container relative z-10">
-          <div className="mx-auto max-w-xl text-center">
-            <motion.h1
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="font-heading text-3xl font-bold text-primary-foreground md:text-5xl"
-            >
-              Sell With Harbor & Stone
-            </motion.h1>
-            <p className="mt-3 text-lg text-primary-foreground/80">
-              Get your free, no-obligation home valuation in under 2 minutes.
-            </p>
-
-            {submitted ? (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="mt-8 rounded-lg bg-card p-8 text-center shadow-lg"
-              >
-                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
-                  <CheckCircle2 className="h-7 w-7 text-primary" />
-                </div>
-                <h3 className="font-heading text-xl font-semibold text-card-foreground">Valuation Requested!</h3>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  We'll prepare your personalized market analysis and reach out within 24 hours.
-                </p>
-                <a href={`tel:${agents[0].phone}`} className="mt-3 inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-                  <Phone className="h-4 w-4" /> {agents[0].phone}
-                </a>
-              </motion.div>
-            ) : (
-              <motion.form
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+            <div className="max-w-xl">
+              <motion.h1
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.15 }}
-                onSubmit={handleSubmit}
-                className="mt-8 rounded-lg bg-card p-6 text-left shadow-lg md:p-8"
+                transition={{ duration: 0.8, ease: customEasing }}
+                className="font-heading text-4xl font-bold text-primary-foreground md:text-5xl lg:text-6xl"
               >
-                <h3 className="font-heading text-lg font-semibold text-card-foreground">Get Your Free Home Valuation</h3>
-                <div className="mt-4 space-y-3">
-                  <div>
-                    <Label htmlFor="sell-address">Property Address</Label>
-                    <Input id="sell-address" placeholder="123 Main St, Austin TX" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} autoComplete="street-address" />
-                    {errors.address && <p className="mt-1 text-xs text-destructive">{errors.address}</p>}
+                Sell With Harbor & Stone
+              </motion.h1>
+              <p className="mt-3 text-lg text-primary-foreground/80 md:text-xl">
+                Get your free, no-obligation home valuation in under 2 minutes.
+              </p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.8, ease: customEasing }}
+                className="mt-10"
+              >
+                <PriceSlider />
+              </motion.div>
+            </div>
+
+            <div>
+              {submitted ? (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ ease: customEasing }}
+                  className="rounded-lg bg-card p-8 text-center shadow-lg"
+                >
+                  <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
+                    <CheckCircle2 className="h-7 w-7 text-primary" />
                   </div>
-                  <div>
-                    <Label htmlFor="sell-email">Email</Label>
-                    <Input id="sell-email" type="email" placeholder="you@email.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} autoComplete="email" />
-                    {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email}</p>}
+                  <h3 className="font-heading text-xl font-semibold text-card-foreground">Valuation Requested!</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    We'll prepare your personalized market analysis and reach out within 24 hours.
+                  </p>
+                  <a href={`tel:${agents[0].phone}`} className="mt-3 inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+                    <Phone className="h-4 w-4" /> {agents[0].phone}
+                  </a>
+                </motion.div>
+              ) : (
+                <motion.form
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.15, duration: 0.8, ease: customEasing }}
+                  onSubmit={handleSubmit}
+                  className="rounded-lg bg-card p-6 text-left shadow-lg md:p-8"
+                >
+                  <h3 className="font-heading text-lg font-semibold text-card-foreground">Get Your Free Home Valuation</h3>
+                  <div className="mt-4 space-y-3">
+                    <div>
+                      <Label htmlFor="sell-address">Property Address</Label>
+                      <Input id="sell-address" placeholder="123 Main St, Austin TX" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} autoComplete="street-address" />
+                      {errors.address && <p className="mt-1 text-xs text-destructive">{errors.address}</p>}
+                    </div>
+                    <div>
+                      <Label htmlFor="sell-email">Email</Label>
+                      <Input id="sell-email" type="email" placeholder="you@email.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} autoComplete="email" />
+                      {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email}</p>}
+                    </div>
+                    <div>
+                      <Label htmlFor="sell-phone">Phone (optional)</Label>
+                      <Input id="sell-phone" type="tel" placeholder="(512) 555-1234" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} autoComplete="tel" />
+                    </div>
+                    <Button type="submit" variant="gold" className="w-full" size="lg" data-event="seller_valuation_submit">
+                      Get My Free Valuation
+                    </Button>
                   </div>
-                  <div>
-                    <Label htmlFor="sell-phone">Phone (optional)</Label>
-                    <Input id="sell-phone" type="tel" placeholder="(512) 555-1234" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} autoComplete="tel" />
-                  </div>
-                  <Button type="submit" className="w-full" size="lg" data-event="seller_valuation_submit">
-                    Get My Free Valuation
-                  </Button>
-                </div>
-              </motion.form>
-            )}
+                </motion.form>
+              )}
+            </div>
           </div>
         </div>
       </section>
+
 
       {/* 3-Step Process */}
       <section className="container py-16 md:py-20">
