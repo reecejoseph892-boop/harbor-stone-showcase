@@ -22,18 +22,18 @@ This document outlines the visual improvements and implementation steps for the 
 ## 📋 Implementation Checklist
 
 ### Phase 1: Hero & Visibility
-- [ ] Change "Get a Free Valuation" button to solid `gold` / `secondary` style in `Index.tsx`.
-- [ ] Enhance Hero section dark overlay for better text contrast.
-- [ ] Add `backdrop-blur` and shadow depth to the Quick Search bar.
+- [x] Change "Get a Free Valuation" button to solid `gold` / `secondary` style in `Index.tsx`.
+- [x] Enhance Hero section dark overlay for better text contrast.
+- [x] Add `backdrop-blur` and shadow depth to the Quick Search bar.
 
 ### Phase 2: Component Polish
-- [ ] Update `PropertyCard` with hover scale (`scale-[1.02]`) and transition effects.
-- [ ] Refine `Header` transparency and blur transitions on scroll.
-- [ ] Ensure all site-wide buttons follow the new "premium" interaction patterns.
+- [x] Update `PropertyCard` with hover scale (`scale-[1.02]`) and transition effects.
+- [x] Refine `Header` transparency and blur transitions on scroll.
+- [x] Ensure all site-wide buttons follow the new "premium" interaction patterns.
 
 ### Phase 3: Layout & Spacing
-- [ ] Audit all vertical spacing between sections (aim for `py-20` to `py-24` on desktop).
-- [ ] Implement staggered reveal animations for home page sections.
+- [x] Audit all vertical spacing between sections (aim for `py-20` to `py-24` on desktop).
+- [x] Implement staggered reveal animations for home page sections.
 
 ---
 
