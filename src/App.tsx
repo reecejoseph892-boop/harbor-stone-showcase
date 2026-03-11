@@ -15,6 +15,8 @@ import SellerLanding from "./pages/SellerLanding";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
+import { Analytics } from "@vercel/analytics/react";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -37,7 +39,7 @@ const App = () => (
           </Routes>
         </SmoothScroll>
       </BrowserRouter>
-
+      <Analytics />
     </TooltipProvider>
   </QueryClientProvider>
 );
