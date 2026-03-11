@@ -29,7 +29,7 @@ export default function Index() {
           className="absolute inset-0 h-full w-full object-cover opacity-40"
           loading="eager"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-foreground/70 to-foreground/30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-foreground/85 to-foreground/40" />
         <div className="container relative z-10 py-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -47,7 +47,7 @@ export default function Index() {
               <Button size="lg" asChild data-event="hero_book_showing">
                 <Link to="/listings">Book a Showing</Link>
               </Button>
-              <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground" asChild data-event="hero_valuation">
+              <Button size="lg" variant="secondary" className="bg-gold text-gold-foreground hover:bg-gold/90 border-none px-8" asChild data-event="hero_valuation">
                 <Link to="/sell">Get a Free Valuation</Link>
               </Button>
             </div>
@@ -58,7 +58,7 @@ export default function Index() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-12 max-w-3xl rounded-lg bg-card/95 p-4 shadow-lg backdrop-blur-sm md:p-5"
+            className="mt-12 max-w-3xl rounded-lg bg-card/85 p-4 shadow-2xl backdrop-blur-md border border-white/10 md:p-5"
           >
             <form className="flex flex-col gap-3 md:flex-row md:items-end">
               <div className="flex-1">
@@ -108,33 +108,45 @@ export default function Index() {
       </section>
 
       {/* ===== FEATURED LISTINGS ===== */}
-      <section className="container py-16 md:py-20">
-        <div className="mb-8 flex items-end justify-between">
+      <motion.section
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.7 }}
+        className="container py-24 md:py-32"
+      >
+        <div className="mb-10 flex items-end justify-between">
           <div>
-            <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">Featured Listings</h2>
-            <p className="mt-1 text-muted-foreground">Hand-picked homes in Austin's best neighborhoods</p>
+            <h2 className="font-heading text-3xl font-bold text-foreground md:text-5xl">Featured Listings</h2>
+            <p className="mt-2 text-lg text-muted-foreground">Hand-picked homes in Austin's best neighborhoods</p>
           </div>
-          <Link to="/listings" className="hidden items-center gap-1 text-sm font-medium text-primary hover:underline md:flex">
+          <Link to="/listings" className="hidden items-center gap-2 text-sm font-semibold text-primary hover:underline md:flex">
             View all <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {listings.map((p) => (
             <PropertyCard key={p.id} property={p} onQuickView={setQuickViewProperty} />
           ))}
         </div>
-        <Link to="/listings" className="mt-6 flex items-center justify-center gap-1 text-sm font-medium text-primary hover:underline md:hidden">
+        <Link to="/listings" className="mt-8 flex items-center justify-center gap-1 text-sm font-medium text-primary hover:underline md:hidden">
           View all listings <ArrowRight className="h-4 w-4" />
         </Link>
-      </section>
+      </motion.section>
 
       {/* ===== LEAD MAGNET ===== */}
-      <section className="bg-primary py-14">
+      <motion.section
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="bg-primary py-20 md:py-28"
+      >
         <div className="container text-center">
-          <h2 className="font-heading text-2xl font-bold text-primary-foreground md:text-3xl">
+          <h2 className="font-heading text-3xl font-bold text-primary-foreground md:text-4xl">
             Get Our 7-Step Buying Checklist
           </h2>
-          <p className="mx-auto mt-2 max-w-lg text-primary-foreground/80">
+          <p className="mx-auto mt-4 max-w-xl text-lg text-primary-foreground/80">
             Everything first-time and move-up buyers need to know before touring Austin homes.
           </p>
           {emailCaptured ? (
@@ -161,61 +173,81 @@ export default function Index() {
             </form>
           )}
         </div>
-      </section>
+      </motion.section>
 
       {/* ===== TRUST / STATS ===== */}
-      <section className="container py-16 md:py-20">
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-          {stats.map((s) => (
-            <div key={s.label} className="text-center">
-              <p className="font-heading text-3xl font-bold text-primary md:text-4xl">{s.value}</p>
-              <p className="mt-1 text-sm text-muted-foreground">{s.label}</p>
-            </div>
+      <section className="container py-24 md:py-32">
+        <div className="grid grid-cols-2 gap-10 md:grid-cols-4">
+          {stats.map((s, idx) => (
+            <motion.div
+              key={s.label}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              className="text-center"
+            >
+              <p className="font-heading text-4xl font-bold text-primary md:text-5xl">{s.value}</p>
+              <p className="mt-2 text-sm font-medium uppercase tracking-widest text-muted-foreground/80">{s.label}</p>
+            </motion.div>
           ))}
         </div>
       </section>
 
       {/* ===== TESTIMONIALS ===== */}
-      <section className="bg-secondary py-16 md:py-20">
+      <section className="bg-secondary/50 py-24 md:py-32">
         <div className="container">
-          <h2 className="text-center font-heading text-3xl font-bold text-foreground md:text-4xl">What Our Clients Say</h2>
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {testimonials.map((t) => (
-              <div key={t.name} className="rounded-lg bg-card p-6 shadow-sm">
-                <div className="mb-3 flex gap-0.5">
+          <h2 className="text-center font-heading text-3xl font-bold text-foreground md:text-5xl">What Our Clients Say</h2>
+          <div className="mt-16 grid gap-8 md:grid-cols-3">
+            {testimonials.map((t, idx) => (
+              <motion.div
+                key={t.name}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                className="rounded-xl bg-card p-8 shadow-sm border border-border/50 hover:shadow-md transition-shadow"
+              >
+                <div className="mb-4 flex gap-1">
                   {Array.from({ length: t.rating }).map((_, i) => (
                     <Star key={i} className="h-4 w-4 fill-accent text-accent" />
                   ))}
                 </div>
-                <p className="text-card-foreground italic">"{t.quote}"</p>
-                <div className="mt-4 flex items-center gap-3">
-                  <img src={t.image} alt={t.name} className="h-10 w-10 rounded-full object-cover" loading="lazy" />
+                <p className="text-lg leading-relaxed text-card-foreground italic">"{t.quote}"</p>
+                <div className="mt-6 flex items-center gap-4">
+                  <img src={t.image} alt={t.name} className="h-12 w-12 rounded-full object-cover border-2 border-primary/10" loading="lazy" />
                   <div>
-                    <p className="text-sm font-medium text-card-foreground">{t.name}</p>
-                    <p className="text-xs text-muted-foreground">{t.role}</p>
+                    <p className="font-bold text-card-foreground">{t.name}</p>
+                    <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.role}</p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* ===== CTA STRIP ===== */}
-      <section className="container py-16 text-center md:py-20">
-        <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">Ready to get started?</h2>
-        <p className="mx-auto mt-2 max-w-md text-muted-foreground">
-          Whether you're buying or selling, our team is here to guide you.
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="container py-24 text-center md:py-32"
+      >
+        <h2 className="font-heading text-4xl font-bold text-foreground md:text-5xl">Ready to get started?</h2>
+        <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">
+          Whether you're buying or selling, our team is here to guide you to your next chapter in Austin.
         </p>
-        <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-          <Button size="lg" asChild data-event="bottom_book_showing">
+        <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+          <Button size="lg" className="px-10" asChild data-event="bottom_book_showing">
             <Link to="/listings">Book a Showing</Link>
           </Button>
-          <Button size="lg" variant="outline" asChild data-event="bottom_sell">
+          <Button size="lg" variant="outline" className="px-10" asChild data-event="bottom_sell">
             <Link to="/sell">Sell Your Home</Link>
           </Button>
         </div>
-      </section>
+      </motion.section>
 
       <Footer />
 

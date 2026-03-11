@@ -16,14 +16,14 @@ export default function PropertyCard({ property, onQuickView }: PropertyCardProp
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.35 }}
-      className="group overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-shadow hover:shadow-md"
+      className="group overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 hover:border-primary/20"
     >
       {/* Image */}
       <div className="relative aspect-[4/3] overflow-hidden">
         <img
           src={property.image}
           alt={`${property.address} — ${property.neighborhood}`}
-          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
           loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-foreground/40 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
